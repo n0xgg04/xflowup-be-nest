@@ -1,0 +1,212 @@
+generator client {
+  provider     = "prisma-kysely"
+  output       = "../db"
+  fileName     = "types.ts"
+  enumFileName = "enums.ts"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id              BigInt       @id @default(autoincrement())
+  email           String       @unique @db.VarChar(255)
+  name            String       @db.VarChar(255)
+  profile_pic_url String       @db.VarChar(255)
+  current_plan    BigInt
+  plan            Plan         @relation(fields: [current_plan], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  UserInTeam      UserInTeam[]
+  Billing         Billing[]
+  UserBalance     UserBalance?
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model UserBalance {
+  id         BigInt   @id @default(autoincrement())
+  userId     BigInt   @unique
+  user       Users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  balance    Int      @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Plan {
+  id              BigInt    @id @default(autoincrement())
+  name            String    @unique @db.VarChar(255)
+  price           Int       @default(0)
+  duration        Int       @default(0)
+  max_projects    Int       @default(10)
+  max_deployments Int       @default(100)
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  Users           Users[]
+  Billing         Billing[]
+}
+
+model Projects {
+  id                  BigInt                @id @default(autoincrement())
+  name                String                @db.VarChar(255)
+  description         String                @db.Text
+  url                 String                @db.VarChar(255)
+  team_id             BigInt                @unique
+  team                Teams                 @relation(fields: [team_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  created_at          DateTime              @default(now())
+  updated_at          DateTime              @updatedAt
+  Domains             Domains[]
+  ProjectsEnvironment ProjectsEnvironment[]
+  ProjectWebhooks     ProjectWebhooks[]
+  ProjectService      ProjectServices[]
+}
+
+model ProjectServices {
+  id            BigInt              @id @default(autoincrement())
+  projectId     BigInt
+  project       Projects            @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  name          String              @db.VarChar(255)
+  environmentId BigInt
+  environment   ProjectsEnvironment @relation(fields: [environmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  created_at    DateTime            @default(now())
+  updated_at    DateTime            @updatedAt
+}
+
+model ProjectsEnvironment {
+  id             BigInt            @id @default(autoincrement())
+  projectId      BigInt
+  project        Projects          @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  name           String            @db.VarChar(255)
+  description    String            @db.Text
+  created_at     DateTime          @default(now())
+  updated_at     DateTime          @updatedAt
+  ProjectService ProjectServices[]
+}
+
+model ProjectWebhooks {
+  id                   BigInt                 @id @default(autoincrement())
+  projectId            BigInt
+  project              Projects               @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  url                  String                 @db.VarChar(255)
+  method               WEBHOOK_HTTP_METHODS   @default(GET)
+  body                 String                 @db.Text
+  created_at           DateTime               @default(now())
+  updated_at           DateTime               @updatedAt
+  ProjectWebhookEvents ProjectWebhookEvents[]
+}
+
+model ProjectWebhookEvents {
+  id               BigInt          @id @default(autoincrement())
+  projectWebhookId BigInt
+  projectWebhook   ProjectWebhooks @relation(fields: [projectWebhookId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  event            WEBHOOK_EVENTS  @default(ON_START_PULL)
+}
+
+model Teams {
+  id         BigInt       @id @default(autoincrement())
+  slug       String       @unique @default(cuid()) @db.VarChar(255)
+  Projects   Projects?
+  UserInTeam UserInTeam[]
+}
+
+model UserInTeam {
+  id          BigInt                  @id @default(autoincrement())
+  user_id     BigInt
+  team_id     BigInt
+  user        Users                   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  team        Teams                   @relation(fields: [team_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  permissions UserInTeamPermissions[]
+  created_at  DateTime                @default(now())
+  updated_at  DateTime                @updatedAt
+}
+
+model Permissions {
+  id          BigInt                  @id @default(autoincrement())
+  name        String                  @unique @db.VarChar(255)
+  created_at  DateTime                @default(now())
+  updated_at  DateTime                @updatedAt
+  userInTeams UserInTeamPermissions[]
+}
+
+model UserInTeamPermissions {
+  userInTeam   UserInTeam  @relation(fields: [userInTeamId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userInTeamId BigInt
+  permission   Permissions @relation(fields: [permissionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  permissionId BigInt
+  assignedAt   DateTime    @default(now())
+
+  @@id([userInTeamId, permissionId])
+}
+
+model Domains {
+  id         BigInt             @id @default(autoincrement())
+  projectId  BigInt             @unique
+  project    Projects           @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  domain     String             @db.VarChar(255)
+  status     DOMAIN_PACK_STATUS @default(WAITING)
+  note       String             @db.Text
+  created_at DateTime           @default(now())
+  updated_at DateTime           @updatedAt
+}
+
+model Billing {
+  id         BigInt         @id @default(autoincrement())
+  userId     BigInt
+  planId     BigInt
+  user       Users          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  plan       Plan           @relation(fields: [planId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  status     BILLING_STATUS @default(WAITING)
+  expireAt   DateTime       @default(now())
+  created_at DateTime       @default(now())
+  updated_at DateTime       @updatedAt
+}
+
+model QueueJob {
+  id         BigInt   @id @default(autoincrement())
+  message_id String   @unique
+  message    Json
+  entity     Json
+  queue      String
+  job_type   String
+  status     Int      @default(0)
+  counter    Int      @default(0)
+  error      Json?    @db.Json
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+enum DOMAIN_PACK_STATUS {
+  WAITING
+  ACTIVE
+  FAILED
+}
+
+enum BILLING_STATUS {
+  WAITING
+  SUCCESS
+  FAILED
+}
+
+enum WEBHOOK_HTTP_METHODS {
+  GET
+  POST
+  PUT
+  DELETE
+  PATCH
+  OPTIONS
+  HEAD
+  CONNECT
+  TRACE
+}
+
+enum WEBHOOK_EVENTS {
+  ON_START_PULL
+  ON_DONE_PULL
+  ON_START_BUILD
+  ON_DONE_BUILD
+  ON_FAILED_BUILD
+  ON_START_DEPLOY
+  ON_DONE_DEPLOY
+  ON_FAILED_DEPLOY
+}
