@@ -48,9 +48,10 @@ export type Plan = {
 };
 export type Projects = {
   id: Generated<string>;
+  slug: string;
   name: string;
-  description: string;
-  url: string;
+  description: Generated<string | null>;
+  url: Generated<string | null>;
   team_id: string;
   created_at: Generated<Timestamp>;
   updated_at: Timestamp;
@@ -109,6 +110,14 @@ export type UserBalance = {
   created_at: Generated<Timestamp>;
   updated_at: Timestamp;
 };
+export type UserBanned = {
+  id: Generated<string>;
+  userId: string;
+  reason: string;
+  expires_at: Timestamp;
+  created_at: Generated<Timestamp>;
+  updated_at: Timestamp;
+};
 export type UserInTeam = {
   id: Generated<string>;
   user_id: string;
@@ -143,6 +152,7 @@ export type DB = {
   QueueJob: QueueJob;
   Teams: Teams;
   UserBalance: UserBalance;
+  UserBanned: UserBanned;
   UserInTeam: UserInTeam;
   UserInTeamPermissions: UserInTeamPermissions;
   Users: Users;

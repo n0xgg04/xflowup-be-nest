@@ -1,5 +1,6 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { SqsService } from './sqs.service';
+import { lastValueFrom } from 'rxjs';
 
 @Resolver()
 export class SqsTestResolver {
@@ -21,12 +22,14 @@ export class SqsTestResolver {
     })
     jobType: string,
   ): Promise<string> {
-    await this.sqsService.send(
-      {
-        message,
-      },
-      jobType,
-      group,
+    await lastValueFrom(
+      this.sqsService.send(
+        {
+          message,
+        },
+        jobType,
+        group,
+      ),
     );
     return `Sent to queue successfully!`;
   }

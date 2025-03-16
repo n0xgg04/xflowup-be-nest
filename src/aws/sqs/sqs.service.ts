@@ -1,13 +1,16 @@
 import { PrismaService } from '@/prisma/prisma.service';
 import { SQS } from '@aws-sdk/client-sqs';
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { catchError, defer, from, switchMap, tap } from 'rxjs';
+import { catchError, defer, from, switchMap } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
+
+interface SQSMessage {
+  QueueUrl: string;
+  MessageBody: string;
+  MessageGroupId?: string;
+  MessageDeduplicationId?: string;
+}
 
 @Injectable()
 export class SqsService {
@@ -26,7 +29,7 @@ export class SqsService {
 
     const messageId = uuidv4();
     const sqsMessage: SQSMessage = {
-      QueueUrl: this.configService.get<string>('sqs.url')!,
+      QueueUrl: this.configService.get<string>('SQS_URL')!,
       MessageBody: JSON.stringify({
         messageId,
         message,
@@ -53,7 +56,7 @@ export class SqsService {
           message: JSON.stringify(sqsMessage),
           entity: JSON.stringify(message),
           job_type: jobType,
-          queue: this.configService.get<string>('sqs.queueName') || '',
+          queue: this.configService.get<string>('SQS_QUEUE_NAME') || '',
           updated_at: new Date(),
           status: 0,
           counter: 0,

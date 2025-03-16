@@ -8,9 +8,17 @@ import { GithubStrategy } from './github.strategy';
 import { JwtStrategy } from './jwt.strategy';
 import { PrismaModule } from '../../prisma/prisma.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AuthGuard } from './auth.guard';
+import { AuthDebugController } from './auth-debug.controller';
 
 @Module({
-  providers: [AuthResolver, AuthService, GithubStrategy, JwtStrategy],
+  providers: [
+    AuthResolver,
+    AuthService,
+    GithubStrategy,
+    JwtStrategy,
+    AuthGuard,
+  ],
   imports: [
     PrismaModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -19,13 +27,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         secret: configService.get('JWT_SECRET', 'superSecretKey'),
-        signOptions: {
-          expiresIn: '1d',
-        },
+        signOptions: {},
       }),
     }),
   ],
-  exports: [AuthService],
-  controllers: [AuthController],
+  exports: [AuthService, AuthGuard, JwtModule],
+  controllers: [AuthController, AuthDebugController],
 })
 export class AuthModule {}

@@ -9,14 +9,14 @@ export default class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateGithubUser(profile: any) {
+  async validateGithubUser(profile: GithubUserProfile) {
     const email = profile.emails?.[0]?.value;
 
     if (!email) {
       throw new Error('GitHub profile does not have an email');
     }
 
-    let user = await this.prismaService.db
+    const user = await this.prismaService.db
       .selectFrom('Users')
       .where('email', '=', email)
       .selectAll()

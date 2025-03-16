@@ -6,9 +6,5 @@ export class GithubResolver {
   constructor(private readonly githubService: GithubService) {}
 
   @Query(() => [Repository])
-  async repositories(
-    @Args('username') username: string,
-  ): Promise<Repository[]> {
-    return this.githubService.getRepositories(username);
-  }
+  async repositories(@Args('username') username: string) {}
 }

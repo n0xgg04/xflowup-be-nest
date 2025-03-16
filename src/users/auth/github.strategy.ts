@@ -30,7 +30,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
       customHeaders: {
         Accept: 'application/json',
       },
-    });
+    } as any);
   }
 
   async validate(accessToken: string, refreshToken: string, profile: any) {

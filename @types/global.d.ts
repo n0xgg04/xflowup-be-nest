@@ -31,6 +31,25 @@ declare global {
     date: string;
     MessageAttributes: MessageAttributes;
   }
+
+  type GithubUserProfile = {
+    emails: {
+      value: string;
+    }[];
+    displayName: string;
+    username: string;
+    photos: {
+      value: string;
+    }[];
+  };
+
+  type User = {
+    id: number;
+    email: string;
+    name: string;
+    profile_pic_url: string;
+    current_plan: string;
+  };
 }
 
 export {};

@@ -11,16 +11,24 @@ import { SqsTestResolver } from './sqs.test.resolver';
     {
       provide: SQS,
       useFactory: (configService: ConfigService) => {
-        const region = configService.get<string>('sqs.region');
-        const accessKeyId = configService.get<string>('sqs.accessKeyId');
+        const region = configService.get<string>('SQS_REGION');
+        const accessKeyId = configService.get<string>('SQS_ACCESS_KEY_ID');
         const secretAccessKey = configService.get<string>(
-          'sqs.secretAccessKey',
+          'SQS_SECRET_ACCESS_KEY',
         );
+
+        if (!region || !accessKeyId || !secretAccessKey) {
+          throw new Error('Missing AWS SQS configuration');
+        }
+
         const sqsConfig = {
           region,
-          accessKeyId,
-          secretAccessKey,
+          credentials: {
+            accessKeyId,
+            secretAccessKey,
+          },
         };
+
         return new SQS(sqsConfig);
       },
       inject: [ConfigService],
