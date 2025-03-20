@@ -5,6 +5,9 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "build": "nest build && yarn sentry:sourcemaps",
     "format": "prettier --write \"src/**/*.ts\"",
@@ -20,6 +23,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migrate": "npx prisma migrate dev",
     "generate": "npx prisma generate",
+    "postinstall": "prisma generate",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org pdate --project xflowup ./dist && sentry-cli sourcemaps upload --org pdate --project xflowup ./dist"
   },
   "prisma": {
