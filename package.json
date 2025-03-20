@@ -9,7 +9,7 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "build": "nest build && yarn sentry:sourcemaps",
+    "build": " SENTRY_AUTH_TOKEN=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 nest build && yarn sentry:sourcemaps",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
