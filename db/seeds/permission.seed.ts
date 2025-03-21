@@ -1,4 +1,4 @@
-import db from '../../db/kysely';
+import db from '../kysely';
 
 (async () => {
   const existed = await db

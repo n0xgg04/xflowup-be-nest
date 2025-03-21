@@ -1,15 +1,17 @@
-import { Kysely, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
-import { DB } from './types';
+import { Kysely, PostgresDialect } from 'kysely';
+import { DB } from 'prisma-kysely';
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+// Create a PostgreSQL dialect using the pg driver
+const dialect = new PostgresDialect({
+  pool: new Pool({
+    connectionString: process.env.DATABASE_URL,
+    max: 10,
+  }),
 });
 
 const db = new Kysely<DB>({
-  dialect: new PostgresDialect({
-    pool,
-  }),
+  dialect,
 });
 
 export default db;

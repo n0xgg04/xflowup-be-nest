@@ -1,7 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
-
 (async () => {
   const plan = await prisma.plan.count({
     where: {

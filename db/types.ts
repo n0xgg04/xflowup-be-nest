@@ -48,6 +48,7 @@ export type Plan = {
 };
 export type Projects = {
   id: Generated<string>;
+  slug: string;
   name: string;
   description: string;
   url: string;

@@ -1,42 +1,64 @@
 import { Status } from '@/shared/enums/base-response';
 import { Field, ObjectType, createUnionType } from '@nestjs/graphql';
 
-@ObjectType()
+@ObjectType({
+  description: 'The project',
+})
 export class Project {
-  @Field(() => String)
+  @Field(() => String, {
+    description: 'The id of the project',
+  })
   id: string;
 
-  @Field(() => String)
+  @Field(() => String, {
+    description: 'The name of the project',
+  })
   name: string;
 
-  @Field(() => String)
+  @Field(() => String, {
+    description: 'The url of the project',
+  })
   url: string;
 
-  @Field(() => Date)
+  @Field(() => Date, {
+    description: 'The created at date of the project',
+  })
   created_at: Date;
 
-  @Field(() => Date)
+  @Field(() => Date, {
+    description: 'The updated at date of the project',
+  })
   updated_at: Date;
 }
 
-@ObjectType()
+@ObjectType({
+  description: 'The response of the project',
+})
 export class ProjectResponse {
-  @Field(() => Status)
+  @Field(() => Status, {
+    description: 'The status of the response',
+  })
   result: Status;
 
   @Field(() => [Project])
   data: Project[];
 }
 
-@ObjectType()
+@ObjectType({
+  description: 'The success response of the project',
+})
 export class ProjectSuccess extends ProjectResponse {}
 
 @ObjectType()
 export class ProjectError {
-  @Field(() => Status)
+  @Field(() => Status, {
+    description: 'The status of the response',
+  })
   result: Status;
 
-  @Field(() => String)
+  @Field(() => String, {
+    description: 'The error message',
+  })
   message: string;
 }
 
@@ -44,7 +66,7 @@ export const ProjectResult = createUnionType({
   name: 'ProjectResult',
   types: () => [ProjectSuccess, ProjectError] as const,
   resolveType(value) {
-    if (value.message) {
+    if ((value as ProjectError).message) {
       return ProjectError;
     }
     return ProjectSuccess;

@@ -12,21 +12,40 @@ import { CreateProjectResult } from './models/create-project.model';
 export class ProjectResolver {
   constructor(private readonly projectService: ProjectService) {}
 
-  @Query(() => ProjectResult)
+  @Query(() => ProjectResult, {
+    description: 'Get all projects',
+  })
   async all_projects(@CurrentUser() user: User) {
     return this.projectService.list(user);
   }
 
-  @Query(() => GetTeamResult)
-  async team_members(@Args('slug') slug: string, @CurrentUser() user: User) {
+  @Query(() => GetTeamResult, {
+    description: 'Get the team members of a project',
+  })
+  async team_members(
+    @Args('slug', {
+      description: 'The slug of the project',
+    })
+    slug: string,
+    @CurrentUser() user: User,
+  ) {
     return this.projectService.team_members(slug, user);
   }
 
-  @Mutation(() => CreateProjectResult)
+  @Mutation(() => CreateProjectResult, {
+    description: 'Create a new project',
+  })
   async create_project(
     @CurrentUser() user: User,
-    @Args('name') name: string,
-    @Args('description', { nullable: true }) description?: string,
+    @Args('name', {
+      description: 'The name of the project',
+    })
+    name: string,
+    @Args('description', {
+      description: 'The description of the project',
+      nullable: true,
+    })
+    description?: string,
   ) {
     return null;
   }

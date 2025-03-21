@@ -23,7 +23,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migrate": "npx prisma migrate dev",
     "generate": "npx prisma generate",
-    "postinstall": "prisma generate",
+    "postinstall": "npx prisma generate",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org pdate --project xflowup ./dist && sentry-cli sourcemaps upload --org pdate --project xflowup ./dist"
   },
   "prisma": {
@@ -70,7 +70,7 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pg": "^8.13.3",
-    "prisma": "^6.4.1",
+    "prisma": "^6.5.0",
     "prisma-kysely": "^1.8.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",

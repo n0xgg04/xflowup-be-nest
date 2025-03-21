@@ -9,9 +9,11 @@ import { CurrentUser } from '@/users/auth/current-user.decorator';
 export class UserInfoResolver {
   constructor(private readonly userInfoService: UserInfoService) {}
 
-  @Query(() => UserInfo)
+  @Query(() => UserInfo, {
+    description: 'Get the user info',
+  })
   @UseGuards(AuthGuard)
-  async userInfo(@CurrentUser() user: User) {
+  async user_info(@CurrentUser() user: User): Promise<UserInfo> {
     if (!user) {
       throw new Error('User not authenticated');
     }

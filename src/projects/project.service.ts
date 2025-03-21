@@ -44,7 +44,7 @@ export class ProjectService {
     } catch (error) {
       return {
         result: Status.ERROR,
-        message: error.message,
+        message: String((error as Error).message),
       };
     }
   }
@@ -96,7 +96,7 @@ export class ProjectService {
     } catch (error) {
       return {
         status: Status.ERROR,
-        message: error.message,
+        message: String((error as Error).message),
       };
     }
   }
@@ -109,9 +109,10 @@ export class ProjectService {
     try {
       const project = await this.prismaService.projects.create({
         data: {
-          name,
           slug: uuid4(),
+          name,
           url: '',
+          description: description || '',
           team: {
             create: {
               slug: uuid4(),
@@ -127,22 +128,29 @@ export class ProjectService {
               },
             },
           },
+          ProjectsEnvironment: {
+            create: {
+              name: 'production',
+              description: 'Production environment',
+            },
+          },
         },
       });
 
       return {
         status: Status.SUCCESS,
         data: {
+          slug: String(project.slug),
           name: project.name,
           url: project.url,
-          slug: project.slug,
-          id: project.id.toString(),
+          id: String(project.id),
+          description: project.description,
         },
       };
     } catch (error) {
       return {
         status: Status.ERROR,
-        message: error.message,
+        message: String((error as Error).message),
       };
     }
   }

@@ -5,17 +5,16 @@ import { PrismaService } from '@/prisma/prisma.service';
 export class UserInfoService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async userInfo(user: any) {
+  async userInfo(user: User) {
     if (!user) {
       throw new Error('User not authenticated');
     }
 
     return {
-      id: user.id,
       email: user.email,
       name: user.name,
-      avatar: user.avatar,
-      public_url: user.public_url,
+      profile_pic_url: user.profile_pic_url,
+      current_plan: user.current_plan,
     };
   }
 }

@@ -1,8 +1,5 @@
 generator client {
-  provider     = "prisma-kysely"
-  output       = "../db"
-  fileName     = "types.ts"
-  enumFileName = "enums.ts"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -49,6 +46,7 @@ model Plan {
 
 model Projects {
   id                  BigInt                @id @default(autoincrement())
+  slug                String                @unique @default(cuid()) @db.VarChar(255)
   name                String                @db.VarChar(255)
   description         String                @db.Text
   url                 String                @db.VarChar(255)
