@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "framework": null,
   "buildCommand": "bun nest build",
   "functions": {
     "api/**/*.ts": {
