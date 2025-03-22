@@ -1,27 +1,15 @@
-FROM oven/bun:1
+FROM node:22-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY package.json ./
+COPY ./dist /app/dist
+COPY ./package.json /app/package.json
+COPY ./yarn.lock /app/yarn.lock
+COPY ./.env /app/.env
+COPY ./prisma /app/prisma
 
-RUN bun install --production
-
-COPY . .
-
-RUN bun build
-
-COPY prisma ./prisma
-COPY db ./db
-COPY migrations ./migrations
-COPY @types ./@types
-COPY utils ./utils
-
-RUN bun prisma generate
-
-RUN bun prisma migrate deploy
-
-RUN bun prisma db seed
+RUN yarn install --production
 
 EXPOSE 3000
 
-CMD ["bun", "dist/main"]
+CMD ["node", "dist/src/src/main"]

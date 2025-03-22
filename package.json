@@ -9,7 +9,7 @@
     "node": ">=22.0.0"
   },
   "scripts": {
-    "build": "nest build",
+    "build": "nest build && tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\"",
     "start": "NODE_ENV=production nest start",
     "start:dev": "nest start --watch",
