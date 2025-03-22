@@ -9,12 +9,12 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthGuard extends NestAuthGuard('jwt') {
-  getRequest(context: ExecutionContext) {
+  getRequest(context: ExecutionContext): Request {
     if (context.getType() === 'http') {
       return context.switchToHttp().getRequest();
     }
     const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().req;
+    return ctx.getContext().req as Request;
   }
 
   canActivate(
@@ -33,6 +33,6 @@ export class AuthGuard extends NestAuthGuard('jwt') {
     if (err || !user) {
       throw err || new UnauthorizedException('User not authenticated');
     }
-    return user;
+    return user as TUser;
   }
 }

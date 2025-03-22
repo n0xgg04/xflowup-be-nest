@@ -16,6 +16,11 @@ export class Project {
   name: string;
 
   @Field(() => String, {
+    description: 'The slug of the project',
+  })
+  slug: string;
+
+  @Field(() => String, {
     description: 'The url of the project',
   })
   url: string;

@@ -1,0 +1,9 @@
+export enum ProjectPermission {
+  OWNER = 1,
+  READ = 2,
+  MANAGE_SERVICE = 3,
+  MANAGE_ENVIRONMENT = 4,
+  MANAGE_DEPLOYMENT = 5,
+  MANAGE_USER = 6,
+  MANAGE_PROJECT = 7,
+}

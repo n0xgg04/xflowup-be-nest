@@ -44,6 +44,18 @@ model Plan {
   Billing         Billing[]
 }
 
+model DockerImageServices {
+  id         BigInt   @id @default(autoincrement())
+  name       String   @unique @db.VarChar(255)
+  image_name String   @db.VarChar(255)
+  image_url  String   @db.VarChar(255)
+  icon       String   @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@unique([image_name, image_url])
+}
+
 model Projects {
   id                  BigInt                @id @default(autoincrement())
   slug                String                @unique @default(cuid()) @db.VarChar(255)
