@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "",
+  "buildCommand": "bun nest build",
   "functions": {
     "api/**/*.ts": {
       "maxDuration": 60
