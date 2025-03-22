@@ -21,9 +21,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migrate": "npx prisma migrate dev",
-    "generate": "npx prisma generate",
-    "postinstall": "npx prisma generate",
+    "migrate": "prisma migrate dev",
+    "generate": "prisma generate",
+    "postinstall": "prisma generate",
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org pdate --project xflowup ./dist && sentry-cli sourcemaps upload --org pdate --project xflowup ./dist"
   },
   "prisma": {

@@ -1,5 +1,8 @@
 import { GithubModule } from '@/github/github.module';
-import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageProductionDefault,
+} from '@apollo/server/plugin/landingPage/default';
 import { createKeyv, Keyv } from '@keyv/redis';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
@@ -44,7 +47,11 @@ import { CacheManagerModule } from './cache/cache.module';
       driver: ApolloDriver,
       autoSchemaFile: true,
       playground: false,
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      plugins: [
+        process.env.NODE_ENV !== 'production'
+          ? ApolloServerPluginLandingPageLocalDefault()
+          : ApolloServerPluginLandingPageProductionDefault(),
+      ],
     }),
     OctokitModule,
     AwsModule,
