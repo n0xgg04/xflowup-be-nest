@@ -1,11 +1,6 @@
 {
   "version": 2,
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/src/main.ts"
-    }
-  ],
+  "buildCommand": "",
   "functions": {
     "api/**/*.ts": {
       "maxDuration": 60
