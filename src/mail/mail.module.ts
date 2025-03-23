@@ -40,6 +40,6 @@ import { MailService } from './mail.service';
       inject: [ConfigService],
     }) as DynamicModule,
   ],
-  exports: [MailgunModule],
+  exports: [MailgunModule, MailService],
 })
 export class MailModule {}

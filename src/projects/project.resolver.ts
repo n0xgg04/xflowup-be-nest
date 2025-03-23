@@ -10,6 +10,10 @@ import { DeleteProjectResult } from './models/delete-project.model';
 import { WithProjectAccess } from '../users/decorators/project-access-apply';
 import { Permissions } from '../users/decorators/permission';
 import { ProjectPermission } from '../users/roles';
+import {
+  AddTeamMemberInput,
+  AddTeamMemberResult,
+} from './models/add-team-member';
 
 @UseGuards(AuthGuard)
 @Resolver()
@@ -70,5 +74,21 @@ export class ProjectResolver {
     @Args('slug', { description: 'The slug of the project' }) slug: string,
   ) {
     return this.projectService.delete_project(user, slug);
+  }
+
+  @Permissions([ProjectPermission.OWNER, ProjectPermission.MANAGE_PROJECT])
+  @WithProjectAccess()
+  @Mutation(() => AddTeamMemberResult, {
+    description: 'Add a team member to a project',
+  })
+  async add_team_member(
+    @CurrentUser() user: User,
+    @Args('project_slug', {
+      description: 'The slug of the project',
+    })
+    project_slug: string,
+    @Args('input') input: AddTeamMemberInput,
+  ) {
+    return this.projectService.add_team_member(user, project_slug, input);
   }
 }

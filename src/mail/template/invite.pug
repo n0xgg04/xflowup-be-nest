@@ -1,0 +1,17 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Invitation
+  body
+    header
+      h1 You are Invited!
+    main
+      p Hi #{name},
+      p You have been invited by #{inviter_name} to join the project "#{project_name}" on XFlowUp.
+      p Please click on the link below to accept the invitation:
+      a(href="#{project_url}") Join #{project_name}
+    footer
+      p Thank you for your attention.
+        p(c) 2025 XFlowUp. All rights reserved.
