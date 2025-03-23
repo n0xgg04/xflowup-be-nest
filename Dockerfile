@@ -1,4 +1,4 @@
-FROM node:22-alpine
+FROM node:23-alpine
 
 WORKDIR /app
 
@@ -12,4 +12,4 @@ RUN yarn install --production
 
 EXPOSE 3000
 
-CMD ["node", "dist/src/src/main"]
+CMD ["node", "dist/src/main"]
