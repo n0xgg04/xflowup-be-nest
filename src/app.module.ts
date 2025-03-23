@@ -50,7 +50,7 @@ import { CacheManagerModule } from './cache/cache.module';
       plugins: [
         // process.env.NODE_ENV !== 'production'
         //  ApolloServerPluginLandingPageLocalDefault()
-        ApolloServerPluginLandingPageProductionDefault(),
+        ApolloServerPluginLandingPageLocalDefault(),
       ],
     }),
     OctokitModule,
