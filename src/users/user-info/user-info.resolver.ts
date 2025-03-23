@@ -2,8 +2,8 @@ import { Query, Resolver } from '@nestjs/graphql';
 import { UserInfoService } from './user-info.service';
 import { UserInfo } from './models/user-info';
 import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@/users/auth/auth.guard';
-import { CurrentUser } from '@/users/auth/current-user.decorator';
+import { AuthGuard } from '../auth/auth.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
 
 @Resolver()
 export class UserInfoResolver {

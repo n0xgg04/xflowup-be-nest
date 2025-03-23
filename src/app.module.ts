@@ -1,4 +1,4 @@
-import { GithubModule } from '@/github/github.module';
+import { GithubModule } from './github/github.module';
 import {
   ApolloServerPluginLandingPageLocalDefault,
   ApolloServerPluginLandingPageProductionDefault,

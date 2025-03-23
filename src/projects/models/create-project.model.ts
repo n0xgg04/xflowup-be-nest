@@ -1,4 +1,4 @@
-import { Status } from '@/shared/enums/base-response';
+import { Status } from '../../shared/enums/base-response';
 import { createUnionType, Field, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()

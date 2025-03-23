@@ -1,8 +1,8 @@
-import { PrismaService } from '@/prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { Environment, GetEnvironmentsResult } from './models/environments';
-import { CacheManagerService } from '@/cache/cache.service';
-import { Status } from '@/shared/enums/base-response';
+import { CacheManagerService } from '../../cache/cache.service';
+import { Status } from '../../shared/enums/base-response';
 import {
   AddEnvironmentsError,
   AddEnvironmentsInput,

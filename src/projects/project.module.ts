@@ -1,4 +1,4 @@
-import { PrismaModule } from '@/prisma/prisma.module';
+import { PrismaModule } from '../prisma/prisma.module';
 import { EnvironmentsModule } from './environments/environments.module';
 import { ProjectResolver } from './project.resolver';
 import { ProjectService } from './project.service';

@@ -1,4 +1,4 @@
-import { Status } from '@/shared/enums/base-response';
+import { Status } from '../../../shared/enums/base-response';
 import { Field, InputType, ObjectType, createUnionType } from '@nestjs/graphql';
 
 @ObjectType('Environment')

@@ -1,9 +1,9 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { EnvironmentsService } from './environments.service';
 import { Environment, GetEnvironmentsResult } from './models/environments';
-import { AuthGuard } from '@/users/auth/auth.guard';
+import { AuthGuard } from '../../users/auth/auth.guard';
 import { UseGuards } from '@nestjs/common';
-import { CurrentUser } from '@/users/auth/current-user.decorator';
+import { CurrentUser } from '../../users/auth/current-user.decorator';
 import {
   AddEnvironmentsInput,
   AddEnvironmentsResult,

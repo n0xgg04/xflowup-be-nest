@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SQS } from '@aws-sdk/client-sqs';
 import { SqsService } from './sqs.service';
-import { PrismaModule } from '@/prisma/prisma.module';
+import { PrismaModule } from '../../prisma/prisma.module';
 import { SqsTestResolver } from './sqs.test.resolver';
 
 @Module({

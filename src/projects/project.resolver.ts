@@ -2,14 +2,14 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ProjectService } from './project.service';
 import { ProjectResult } from './models/project.model';
 import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@/users/auth/auth.guard';
-import { CurrentUser } from '@/users/auth/current-user.decorator';
+import { AuthGuard } from '../users/auth/auth.guard';
+import { CurrentUser } from '../users/auth/current-user.decorator';
 import { GetTeamResult } from './models/team';
 import { CreateProjectResult } from './models/create-project.model';
 import { DeleteProjectResult } from './models/delete-project.model';
-import { WithProjectAccess } from '@/users/decorators/project-access-apply';
-import { Permissions } from '@/users/decorators/permission';
-import { ProjectPermission } from '@/users/roles';
+import { WithProjectAccess } from '../users/decorators/project-access-apply';
+import { Permissions } from '../users/decorators/permission';
+import { ProjectPermission } from '../users/roles';
 
 @UseGuards(AuthGuard)
 @Resolver()

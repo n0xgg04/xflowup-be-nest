@@ -1,12 +1,12 @@
-import { PrismaService } from '@/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { ProjectResult } from './models/project.model';
-import { Status } from '@/shared/enums/base-response';
+import { Status } from '../shared/enums/base-response';
 import { GetTeamResult } from './models/team';
 import { CreateProjectResult } from './models/create-project.model';
 import { uuid4 } from '@sentry/core';
 import { DeleteProjectResult } from './models/delete-project.model';
-import { CacheManagerService } from '@/cache/cache.service';
+import { CacheManagerService } from '../cache/cache.service';
 @Injectable()
 export class ProjectService {
   constructor(

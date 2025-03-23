@@ -1,7 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { ServiceManagementService } from './service-management.service';
 import { ServiceManagementResolver } from './service-management.resolver';
-import { PrismaModule } from '@/prisma/prisma.module';
+import { PrismaModule } from '../../prisma/prisma.module';
 
 @Global()
 @Module({

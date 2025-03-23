@@ -1,7 +1,7 @@
 import { Query, Resolver } from '@nestjs/graphql';
 import { ServiceManagementService } from './service-management.service';
 import { GetDatabaseServiceResult } from './models/get-database-service';
-import { AuthGuard } from '@/users/auth/auth.guard';
+import { AuthGuard } from '../../users/auth/auth.guard';
 import { UseGuards } from '@nestjs/common';
 
 @UseGuards(AuthGuard)
