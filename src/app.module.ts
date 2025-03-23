@@ -48,9 +48,9 @@ import { CacheManagerModule } from './cache/cache.module';
       autoSchemaFile: true,
       playground: false,
       plugins: [
-        process.env.NODE_ENV !== 'production'
-          ? ApolloServerPluginLandingPageLocalDefault()
-          : ApolloServerPluginLandingPageProductionDefault(),
+        // process.env.NODE_ENV !== 'production'
+        //  ApolloServerPluginLandingPageLocalDefault()
+        ApolloServerPluginLandingPageProductionDefault(),
       ],
     }),
     OctokitModule,
