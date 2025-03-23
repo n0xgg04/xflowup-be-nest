@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      script: 'bun start',
+      script: 'npx nest start',
       watch: '.',
       name: 'xflowup-be-nest',
     },
