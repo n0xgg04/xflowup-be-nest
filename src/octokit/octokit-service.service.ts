@@ -1,6 +1,6 @@
 import { Inject, Injectable, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { Octokit } from '@octokit/rest';
+import { Octokit } from 'octokit';
 
 @Injectable({ scope: Scope.REQUEST })
 export class OctokitService {
@@ -14,7 +14,7 @@ export class OctokitService {
     });
   }
 
-  octokit() {
+  octokit(): Octokit {
     return this.octokitInstant;
   }
 }
