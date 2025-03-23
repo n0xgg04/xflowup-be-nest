@@ -10,10 +10,14 @@ import { Status } from '../../shared/enums/base-response';
 @InputType('AddTeamMemberInput')
 @ObjectType()
 export class AddTeamMemberInput {
-  @Field(() => String)
+  @Field(() => String, {
+    description: 'The email of the team member',
+  })
   email: string;
 
-  @Field(() => [Int])
+  @Field(() => [Int], {
+    description: 'The permissions of the team member',
+  })
   permissions: number[];
 }
 

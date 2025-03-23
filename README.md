@@ -28,7 +28,18 @@ $ yarn install
 
 ## Running the app
 
+Chmod for scripts:
+
+```bash
+chmod 0777 ./scripts/*
+```
+
+Run application:
+
 ```bash
 # development
 $ yarn start:dev
+
+# production
+$ yarn start
 ```

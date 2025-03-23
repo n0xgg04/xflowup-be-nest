@@ -16,7 +16,6 @@ export class ProjectService {
     private readonly prismaService: PrismaService,
     private readonly cacheManagerService: CacheManagerService,
     private readonly mailService: MailService,
-    private readonly cacheService: CacheManagerService,
   ) {}
 
   async list(user: User): Promise<typeof ProjectResult> {
@@ -278,7 +277,7 @@ export class ProjectService {
           };
         }
 
-        const permissions = await this.cacheService.remember(
+        const permissions = await this.cacheManagerService.remember(
           `permissions:all`,
           async () =>
             await prisma.permissions.findMany({

@@ -5,7 +5,7 @@ import {
 } from '@apollo/server/plugin/landingPage/default';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { GraphQLModule } from '@nestjs/graphql';
 import { SentryGlobalFilter, SentryModule } from '@sentry/nestjs/setup';
@@ -19,6 +19,14 @@ import { UserModule } from './users/user.module';
 import { CacheManagerModule } from './cache/cache.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { MailModule } from './mail/mail.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import {
+  utilities as nestWinstonModuleUtilities,
+  WinstonModule,
+} from 'nest-winston';
+import winston from 'winston';
 @Module({
   imports: [
     SentryModule.forRoot(),
@@ -54,6 +62,13 @@ import { MailModule } from './mail/mail.module';
       ],
     }),
     MailModule,
+    ScheduleModule.forRoot(),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+    }),
+    WinstonModule.forRoot({
+      transports: [],
+    }),
   ],
   providers: [
     {

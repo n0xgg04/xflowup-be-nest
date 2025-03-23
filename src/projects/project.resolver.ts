@@ -87,8 +87,11 @@ export class ProjectResolver {
       description: 'The slug of the project',
     })
     project_slug: string,
-    @Args('input') input: AddTeamMemberInput,
+    @Args('member', {
+      description: 'The member to add to the project',
+    })
+    member: AddTeamMemberInput,
   ) {
-    return this.projectService.add_team_member(user, project_slug, input);
+    return this.projectService.add_team_member(user, project_slug, member);
   }
 }
