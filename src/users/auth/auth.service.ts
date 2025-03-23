@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-
+import { MailgunService } from 'nestjs-mailgun';
+import { ConfigService } from '@nestjs/config';
 @Injectable()
 export default class AuthService {
   constructor(
     private prismaService: PrismaService,
     private jwtService: JwtService,
+    private mailgunService: MailgunService,
+    private configService: ConfigService,
   ) {}
 
   async validateGithubUser(profile: GithubUserProfile) {
@@ -44,7 +47,28 @@ export default class AuthService {
         throw new Error('No plan found in the database');
       }
 
-      return await this.prismaService.db
+      try {
+        await this.mailgunService.createEmail(
+          this.configService.get('MAILGUN_DOMAIN')!,
+          {
+            from:
+              'XFlowUP <no-reply@' + this.configService.get('MAILGUN_DOMAIN')!,
+            to: email,
+            subject: 'Welcome to XFlowUP',
+            text: 'Welcome to XFlowUP',
+            html: '<p>Welcome to XFlowUP</p>',
+            attachment: '',
+            cc: '',
+            bcc: '',
+            'o:testmode': 'no',
+            'h:X-Mailgun-Variables': '{"key":"value"}',
+          },
+        );
+      } catch (error) {
+        console.error(error);
+      }
+
+      return this.prismaService.db
         .insertInto('Users')
         .values({
           email: email,

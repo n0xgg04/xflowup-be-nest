@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { EnvironmentsService } from './environments.service';
-import { Environment, GetEnvironmentsResult } from './models/environments';
+import { GetEnvironmentsResult } from './models/environments';
 import { AuthGuard } from '../../users/auth/auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { CurrentUser } from '../../users/auth/current-user.decorator';
@@ -8,6 +8,13 @@ import {
   AddEnvironmentsInput,
   AddEnvironmentsResult,
 } from './models/add-environments';
+import {
+  GetEnvironmentValuesInput,
+  GetEnvironmentValuesResult,
+} from './models/environments-values';
+import { WithProjectAccess } from 'src/users/decorators/project-access-apply';
+import { ProjectPermission } from 'src/users/roles';
+import { Permissions } from 'src/users/decorators/permission';
 
 @UseGuards(AuthGuard)
 @Resolver()
@@ -22,6 +29,28 @@ export class EnvironmentsResolver {
     return this.environmentsService.allEnvironments(user, project_slug);
   }
 
+  @Permissions([
+    ProjectPermission.READ,
+    ProjectPermission.OWNER,
+    ProjectPermission.MANAGE_ENVIRONMENT,
+    ProjectPermission.MANAGE_PROJECT,
+  ])
+  @WithProjectAccess()
+  @Query(() => GetEnvironmentValuesResult)
+  async environment_values(
+    @CurrentUser() user: User,
+    @Args('input', { type: () => GetEnvironmentValuesInput })
+    input: GetEnvironmentValuesInput,
+  ): Promise<typeof GetEnvironmentValuesResult> {
+    return this.environmentsService.getEnvironmentValues(user, input);
+  }
+
+  @Permissions([
+    ProjectPermission.OWNER,
+    ProjectPermission.MANAGE_ENVIRONMENT,
+    ProjectPermission.MANAGE_PROJECT,
+  ])
+  @WithProjectAccess()
   @Mutation(() => AddEnvironmentsResult)
   async add_environment(
     @CurrentUser() user: User,

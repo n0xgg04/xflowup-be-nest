@@ -9,6 +9,10 @@ import {
   AddEnvironmentsResult,
   AddEnvironmentsSuccess,
 } from './models/add-environments';
+import {
+  GetEnvironmentValuesInput,
+  GetEnvironmentValuesResult,
+} from './models/environments-values';
 
 @Injectable()
 export class EnvironmentsService {
@@ -124,5 +128,14 @@ export class EnvironmentsService {
         message: error.message,
       } as AddEnvironmentsError;
     }
+  }
+
+  async getEnvironmentValues(
+    user: User,
+    input: GetEnvironmentValuesInput,
+  ): Promise<typeof GetEnvironmentValuesResult> {
+    return {
+      status: Status.SUCCESS,
+    };
   }
 }

@@ -23,17 +23,23 @@ export class ProjectResolver {
     return this.projectService.list(user);
   }
 
+  @Permissions([
+    ProjectPermission.READ,
+    ProjectPermission.OWNER,
+    ProjectPermission.MANAGE_PROJECT,
+  ])
+  @WithProjectAccess()
   @Query(() => GetTeamResult, {
     description: 'Get the team members of a project',
   })
   async team_members(
-    @Args('slug', {
+    @Args('project_slug', {
       description: 'The slug of the project',
     })
-    slug: string,
+    project_slug: string,
     @CurrentUser() user: User,
   ) {
-    return this.projectService.team_members(slug, user);
+    return this.projectService.team_members(project_slug, user);
   }
 
   @Mutation(() => CreateProjectResult, {
@@ -54,7 +60,7 @@ export class ProjectResolver {
     return this.projectService.create_project(user, name, description);
   }
 
-  @Permissions([ProjectPermission.MANAGE_PROJECT, ProjectPermission.OWNER])
+  @Permissions([ProjectPermission.OWNER])
   @WithProjectAccess()
   @Mutation(() => DeleteProjectResult, {
     description: 'Delete a project',
