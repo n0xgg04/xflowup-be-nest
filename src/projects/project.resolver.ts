@@ -1,7 +1,7 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { ProjectService } from './project.service';
 import { ProjectResult } from './models/project.model';
-import { UseGuards } from '@nestjs/common';
+import { Inject, Logger, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../users/auth/auth.guard';
 import { CurrentUser } from '../users/auth/current-user.decorator';
 import { GetTeamResult } from './models/team';
@@ -14,11 +14,15 @@ import {
   AddTeamMemberInput,
   AddTeamMemberResult,
 } from './models/add-team-member';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 
 @UseGuards(AuthGuard)
 @Resolver()
 export class ProjectResolver {
-  constructor(private readonly projectService: ProjectService) {}
+  constructor(
+    private readonly projectService: ProjectService,
+    @Inject(WINSTON_MODULE_PROVIDER) private readonly logger: Logger,
+  ) {}
 
   @Query(() => ProjectResult, {
     description: 'Get all projects',

@@ -22,11 +22,7 @@ import { MailModule } from './mail/mail.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import {
-  utilities as nestWinstonModuleUtilities,
-  WinstonModule,
-} from 'nest-winston';
-import winston from 'winston';
+import { WinstonModule } from './winston/winstone.module';
 @Module({
   imports: [
     SentryModule.forRoot(),
@@ -66,9 +62,7 @@ import winston from 'winston';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
-    WinstonModule.forRoot({
-      transports: [],
-    }),
+    WinstonModule,
   ],
   providers: [
     {

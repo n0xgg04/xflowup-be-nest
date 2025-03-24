@@ -11,7 +11,9 @@ export class ServiceManagementResolver {
     private readonly serviceManagementService: ServiceManagementService,
   ) {}
 
-  @Query(() => GetDatabaseServiceResult)
+  @Query(() => GetDatabaseServiceResult, {
+    description: 'Get all database services for creating new service',
+  })
   async get_database_services(): Promise<typeof GetDatabaseServiceResult> {
     return this.serviceManagementService.getDatabaseServices();
   }

@@ -21,7 +21,9 @@ import { Permissions } from 'src/users/decorators/permission';
 export class EnvironmentsResolver {
   constructor(private readonly environmentsService: EnvironmentsService) {}
 
-  @Query(() => GetEnvironmentsResult)
+  @Query(() => GetEnvironmentsResult, {
+    description: 'Get all environments in a project',
+  })
   async environments(
     @CurrentUser() user: User,
     @Args('project_slug', { type: () => String }) project_slug: string,
@@ -36,7 +38,9 @@ export class EnvironmentsResolver {
     ProjectPermission.MANAGE_PROJECT,
   ])
   @WithProjectAccess()
-  @Query(() => GetEnvironmentValuesResult)
+  @Query(() => GetEnvironmentValuesResult, {
+    description: 'Get environment values',
+  })
   async environment_values(
     @CurrentUser() user: User,
     @Args('input', { type: () => GetEnvironmentValuesInput })
@@ -51,7 +55,9 @@ export class EnvironmentsResolver {
     ProjectPermission.MANAGE_PROJECT,
   ])
   @WithProjectAccess()
-  @Mutation(() => AddEnvironmentsResult)
+  @Mutation(() => AddEnvironmentsResult, {
+    description: 'Add an environment to a project',
+  })
   async add_environment(
     @CurrentUser() user: User,
     @Args('project_slug', { type: () => String }) project_slug: string,

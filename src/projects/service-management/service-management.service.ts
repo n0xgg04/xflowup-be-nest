@@ -17,7 +17,6 @@ export class ServiceManagementService {
         async () => {
           return await this.prisma.dockerImageServices.findMany();
         },
-        60 * 60 * 24,
       );
 
       return {

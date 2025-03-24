@@ -6,7 +6,9 @@ import { MailService } from './mail.service';
 export class MailResolver {
   constructor(private readonly mailService: MailService) {}
 
-  @Mutation(() => MailResponse)
+  @Mutation(() => MailResponse, {
+    description: 'Send an email',
+  })
   async send_email(
     @Args('to') to: string,
     @Args('subject') subject: string,
@@ -30,7 +32,9 @@ export class MailResolver {
     }
   }
 
-  @Mutation(() => MailResponse)
+  @Mutation(() => MailResponse, {
+    description: 'Send an email with a template',
+  })
   async send_email_with_template(
     @Args('to') to: string,
     @Args('subject') subject: string,
