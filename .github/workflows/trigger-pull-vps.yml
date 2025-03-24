@@ -1,6 +1,6 @@
 name: Pull and build on VPS
 
-'on':
+on:
   push:
     branches:
       - master
@@ -14,18 +14,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up SSH key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
       - name: SSH and Prepare Environment
-        run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_SSH_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "cd ${{ secrets.PROJECT_DIR }}"
+        run: |
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_SSH_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "cd ${{ secrets.PROJECT_DIR }}"
 
-      - name: Pull Latest Code
-        run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_SSH_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "git pull origin main"
-
-      - name: Install Dependencies
-        run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_SSH_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "yarn build"
-
-      - name: Restart Application
-        run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_SSH_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "pm2 restart ${{ secrets.PM2_APP_NAME }}"
+      - name: Deploy and Build
+        run: |
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.VPS_SSH_PORT }} ${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }} "cd ${{ secrets.PROJECT_DIR }} && git pull origin master && yarn build && pm2 restart ${{ secrets.PM2_APP_NAME }}"
